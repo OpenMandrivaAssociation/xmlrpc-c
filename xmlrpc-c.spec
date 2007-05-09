@@ -15,6 +15,7 @@ License:	BSD like
 Group:		System/Libraries
 Source:		%{name}-%{version}.tgz
 Patch0:		%{name}_wwwssl.patch
+Patch1:		%{name}_fpic.patch
 BuildRequires:	w3c-libwww-devel >= 5.3.2
 BuildRequires:	curl-devel
 
@@ -55,6 +56,7 @@ This package contains the devlopement files.
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 
 %build
 ./configure \
@@ -63,7 +65,7 @@ This package contains the devlopement files.
   --includedir=%{_includedir} \
   --with-libwww-ssl
 
-perl -pi -e 's|LIBWWW_LDADD@,-L/usr/lib|LIBWWW_LDADD@,-L/usr/lib -lwwwssl|' config.status
+perl -pi -e 's|(LIBWWW_LDADD@,-L/usr/lib\S*)|$1 -lwwwssl|' config.status
 ./config.status
 chmod +x xmlrpc-c-config.test
 make
