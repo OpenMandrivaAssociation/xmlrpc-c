@@ -68,7 +68,7 @@ This package contains the devlopement files.
 perl -pi -e 's|(LIBWWW_LDADD@,-L/usr/lib\S*)|$1 -lwwwssl|' config.status
 ./config.status
 chmod +x xmlrpc-c-config.test
-make
+%make
 
 %clean
 %{__rm} -Rf %RPM_BUILD_ROOT
