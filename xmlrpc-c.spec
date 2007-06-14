@@ -1,6 +1,6 @@
 %define name		xmlrpc-c
 %define version		1.06.14
-%define release		%mkrel 1
+%define release		%mkrel 2
 
 %define libname_orig	xmlrpc-c
 %define libname		%mklibname %{libname_orig}
@@ -36,6 +36,7 @@ Summary:	Programming library for writing an XML-RPC server or client in C or C++
 Group:		System/Libraries
 Requires:	%{libname}
 Provides:	%{name}-devel = %{version}-%{release}
+Provides:	lib%{name}-devel = %{version}-%{release}
 
 %description -n %{libname}
 XML-RPC is a quick-and-easy way to make procedure calls over the Internet.
