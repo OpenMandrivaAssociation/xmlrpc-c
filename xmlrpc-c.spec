@@ -9,6 +9,7 @@ Name:		%name
 Summary:	Programming library for writing an XML-RPC server or client in C or C++
 Version:	%version
 Release:	%release
+BuildRoot:	%{_tmppath}/%{name}-%{version}-root
 URL:		http://xmlrpc-c.sourceforge.net/
 License:	BSD like
 Group:		System/Libraries
