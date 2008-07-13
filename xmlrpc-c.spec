@@ -20,7 +20,7 @@ Patch2:		xmlrpc-c-1.06.27-curl-easy-setopt.patch
 Patch3:		xmlrpc-c-1.06.09-asneeded.patch
 Patch4:		xmlrpc-c-1.06.27-abyss-header-fixup.patch
 Patch5:		xmlrpc-c-1.06.27-gcc43-test-fix.patch
-BuildRequires:	curl-devel
+BuildRequires:	curl-devel libxml2-devel
 Conflicts:	%mklibname %name
 
 %description
