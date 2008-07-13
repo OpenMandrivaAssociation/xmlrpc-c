@@ -1,9 +1,10 @@
 %define name		xmlrpc-c
-%define version		1.06.14
-%define release		%mkrel 2
+%define version		1.06.27
+%define release		%mkrel 1
 
-%define libname_orig	xmlrpc-c
-%define libname		%mklibname %{libname_orig}
+%define	major		3
+%define libname		%mklibname %name %major
+%define develanme	%mklibname -d %name
 
 Name:		%name
 Summary:	Programming library for writing an XML-RPC server or client in C or C++
@@ -13,11 +14,14 @@ BuildRoot:	%{_tmppath}/%{name}-%{version}-root
 URL:		http://xmlrpc-c.sourceforge.net/
 License:	BSD like
 Group:		System/Libraries
-Source:		%{name}-%{version}.tgz
-Patch0:		%{name}_wwwssl.patch
+Source:		xmlrpc-%{version}.tgz
 Patch1:		%{name}_fpic.patch
-BuildRequires:	w3c-libwww-devel >= 5.3.2
+Patch2:		xmlrpc-c-1.06.27-curl-easy-setopt.patch
+Patch3:		xmlrpc-c-1.06.09-asneeded.patch
+Patch4:		xmlrpc-c-1.06.27-abyss-header-fixup.patch
+Patch5:		xmlrpc-c-1.06.27-gcc43-test-fix.patch
 BuildRequires:	curl-devel
+Conflicts:	%mklibname %name
 
 %description
 XML-RPC is a quick-and-easy way to make procedure calls over the Internet.
@@ -30,8 +34,9 @@ This library provides a modular implementation of XML-RPC for C and C++.
 %package -n %{libname}
 Summary:	Programming library for writing an XML-RPC server or client in C or C++
 Group:		System/Libraries
+Obsoletes:	%mklibname %name
 
-%package -n %{libname}-devel
+%package -n %{develname}
 Summary:	Programming library for writing an XML-RPC server or client in C or C++
 Group:		System/Libraries
 Requires:	%{libname}
@@ -45,7 +50,7 @@ server using HTTP, and gets back the response as XML.
 
 This library provides a modular implementation of XML-RPC for C and C++.
 
-%description -n %{libname}-devel
+%description -n %{develname}
 XML-RPC is a quick-and-easy way to make procedure calls over the Internet.
 It converts the procedure call into XML document, sends it to a remote
 server using HTTP, and gets back the response as XML.
@@ -55,36 +60,36 @@ This library provides a modular implementation of XML-RPC for C and C++.
 This package contains the devlopement files.
 
 %prep
-%setup -q
-%patch0 -p1
+%setup -q 
 %patch1 -p1
+%patch2 -p1
+%patch3 -p1
+%patch4 -p1
+%patch5 -p1
 
 %build
-./configure \
-  --bindir=%{_bindir} \
-  --libdir=%{_libdir} \
-  --includedir=%{_includedir} \
-  --with-libwww-ssl
-
-perl -pi -e 's|(LIBWWW_LDADD@,-L/usr/lib\S*)|$1 -lwwwssl|' config.status
-./config.status
-chmod +x xmlrpc-c-config.test
+%configure2_5x \
+	--disable-wininet-client --enable-libxml2-backend \
+	--disable-libwww-client --enable-curl-client
 %make
 
 %clean
-%{__rm} -Rf %RPM_BUILD_ROOT
 %{__rm} -Rf %{buildroot}
 
 %install
-%makeinstall DESTDIR=$RPM_BUILD_ROOT
+rm -fr %buildroot
+%makeinstall_std
 
-%files -n %{libname}
+%files
 %defattr(-,root,root)
 %doc doc/COPYING doc/CREDITS doc/DEVELOPING doc/HISTORY doc/SECURITY doc/TESTING doc/TODO
 %{_bindir}/*
+
+%files -n %{libname}
+%defattr(-,root,root)
 %{_libdir}/lib*.so.*
 
-%files -n %{libname}-devel
+%files -n %{develname}
 %defattr(-,root,root)
 %{_includedir}
 %{_libdir}/lib*.a
