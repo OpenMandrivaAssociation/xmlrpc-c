@@ -4,7 +4,7 @@
 
 %define	major		3
 %define libname		%mklibname %name %major
-%define develanme	%mklibname -d %name
+%define develname	%mklibname -d %name
 
 Name:		%name
 Summary:	Programming library for writing an XML-RPC server or client in C or C++
@@ -67,11 +67,14 @@ This package contains the devlopement files.
 %patch4 -p1
 %patch5 -p1
 
+sed -i -e "/CFLAGS_COMMON/s:-g -O3$:%{optflags}:" Makefile.common
+sed -i -e "/CXXFLAGS_COMMON/s:-g$:%{optflags}:" Makefile.common
+
 %build
 %configure2_5x \
 	--disable-wininet-client --enable-libxml2-backend \
 	--disable-libwww-client --enable-curl-client
-%make
+make
 
 %clean
 %{__rm} -Rf %{buildroot}
