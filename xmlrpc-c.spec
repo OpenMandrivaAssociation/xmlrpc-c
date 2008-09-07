@@ -1,6 +1,6 @@
 %define name		xmlrpc-c
 %define version		1.06.27
-%define release		%mkrel 2
+%define release		%mkrel 3
 
 %define	major		3
 %define libname		%mklibname %name %major
@@ -40,6 +40,7 @@ Obsoletes:	%mklibname %name
 Summary:	Programming library for writing an XML-RPC server or client in C or C++
 Group:		System/Libraries
 Requires:	%{libname} = %version-%release
+Requires:	libxml2-devel
 Provides:	%{name}-devel = %{version}-%{release}
 Provides:	lib%{name}-devel = %{version}-%{release}
 Conflicts:	%name < 1.06.27-2
