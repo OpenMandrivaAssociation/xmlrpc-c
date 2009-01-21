@@ -1,6 +1,6 @@
 %define name		xmlrpc-c
 %define version		1.06.27
-%define release		%mkrel 3
+%define release		%mkrel 4
 
 %define	major		3
 %define libname		%mklibname %name %major
