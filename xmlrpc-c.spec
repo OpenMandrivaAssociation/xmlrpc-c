@@ -1,6 +1,6 @@
 %define name		xmlrpc-c
 %define version		1.06.27
-%define release		%mkrel 4
+%define release		%mkrel 5
 
 %define	major		3
 %define libname		%mklibname %name %major
@@ -69,6 +69,10 @@ This package contains the devlopement files.
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
+
+aclocal --force
+libtoolize --force
+autoconf
 
 sed -i -e "/CFLAGS_COMMON/s:-g -O3$:%{optflags}:" Makefile.common
 sed -i -e "/CXXFLAGS_COMMON/s:-g$:%{optflags}:" Makefile.common
