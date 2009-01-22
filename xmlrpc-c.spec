@@ -74,14 +74,11 @@ aclocal --force
 libtoolize --force
 autoconf
 
-sed -i -e "/CFLAGS_COMMON/s:-g -O3$:%{optflags}:" Makefile.common
-sed -i -e "/CXXFLAGS_COMMON/s:-g$:%{optflags}:" Makefile.common
-
 %build
 %configure2_5x \
 	--disable-wininet-client --enable-libxml2-backend \
 	--disable-libwww-client --enable-curl-client
-make
+make CFLAGS_COMMON="-DNDEBUG -fno-common %{optflags} -O3" CXXFLAGS_COMMON="-DNDEBUG -fPIC %{optflags} -O3"
 
 %clean
 %{__rm} -Rf %{buildroot}
