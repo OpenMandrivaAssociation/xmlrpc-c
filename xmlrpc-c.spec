@@ -1,6 +1,7 @@
 %define name		xmlrpc-c
-%define version		1.06.27
-%define release		%mkrel 5
+%define version		1.20.3
+%define revision    1841
+%define release		%mkrel 1
 
 %define	major		3
 %define libname		%mklibname %name %major
@@ -10,18 +11,23 @@ Name:		%name
 Summary:	Programming library for writing an XML-RPC server or client in C or C++
 Version:	%version
 Release:	%release
-BuildRoot:	%{_tmppath}/%{name}-%{version}-root
-URL:		http://xmlrpc-c.sourceforge.net/
 License:	BSD like
 Group:		System/Libraries
-Source:		xmlrpc-%{version}.tgz
-Patch1:		%{name}_fpic.patch
-Patch2:		xmlrpc-c-1.06.27-curl-easy-setopt.patch
-Patch3:		xmlrpc-c-1.06.09-asneeded.patch
-Patch4:		xmlrpc-c-1.06.27-abyss-header-fixup.patch
-Patch5:		xmlrpc-c-1.06.27-gcc43-test-fix.patch
-BuildRequires:	curl-devel libxml2-devel
+URL:		http://xmlrpc-c.sourceforge.net/
+Source:		http://dl.sourceforge.net/sourceforge/xmlrpc-c/xmlrpc-c-%{version}.tar.bz2
+Patch100: xmlrpc-c-cmake.patch 
+Patch102: xmlrpc-c-printf-size_t.patch
+Patch105: xmlrpc-c-longlong.patch
+Patch106: xmlrpc-c-va_list.patch
+Patch107: xmlrpc-c-uninit-curl.patch
+Patch108: xmlrpc-c-verbose-curl.patch 
+BuildRequires:	libxml2-devel
+BuildRequires:	curl-devel
+BuildRequires:	readline-devel
+BuildRequires:	ncurses-devel 
+BuildRequires:	cmake
 Conflicts:	%mklibname %name
+BuildRoot:	%{_tmppath}/%{name}-%{version}
 
 %description
 XML-RPC is a quick-and-easy way to make procedure calls over the Internet.
@@ -63,28 +69,28 @@ This library provides a modular implementation of XML-RPC for C and C++.
 This package contains the devlopement files.
 
 %prep
-%setup -q 
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
-%patch4 -p1
-%patch5 -p1
+%setup -q -n %{name}
+%patch100 -p1
+%patch102 -p1
+%patch105 -p1
+%patch106 -p1
+%patch107 -p1
+%patch108 -p1
 
-aclocal --force
-libtoolize --force
-autoconf
 
 %build
-%configure2_5x \
-	--disable-wininet-client --enable-libxml2-backend \
-	--disable-libwww-client --enable-curl-client
-make CFLAGS_COMMON="-DNDEBUG -fno-common %{optflags} -O3" CXXFLAGS_COMMON="-DNDEBUG -fPIC %{optflags} -O3"
+%cmake \
+    -DMUST_BUILD_CURL_CLIENT:BOOL=ON \
+    -DMUST_BUILD_LIBWWW_CLIENT:BOOL=OFF \
+    -DENABLE_TOOLS:BOOL=ON
+%make
 
 %clean
 %{__rm} -Rf %{buildroot}
 
 %install
 rm -fr %buildroot
+cd build
 %makeinstall_std
 
 %files
@@ -92,6 +98,11 @@ rm -fr %buildroot
 %doc doc/COPYING doc/CREDITS doc/DEVELOPING doc/HISTORY doc/SECURITY doc/TESTING doc/TODO
 %{_bindir}/xmlrpc
 %{_bindir}/xmlrpc_transport
+%{_bindir}/xml-rpc-api2cpp
+%{_bindir}/xml-rpc-api2txt
+%{_bindir}/xmlrpc_cpp_proxy
+%{_mandir}/man1/xml-rpc-api2cpp.1*
+%{_mandir}/man1/xml-rpc-api2txt.1*
 
 %files -n %{libname}
 %defattr(-,root,root)
@@ -102,7 +113,6 @@ rm -fr %buildroot
 %{_bindir}/xmlrpc-c-config
 %{_includedir}/*.h
 %{_includedir}/%name
-%{_libdir}/lib*.a
-%{_libdir}/lib*.la
 %{_libdir}/lib*.so
+%{_libdir}/pkgconfig/*.pc
 
