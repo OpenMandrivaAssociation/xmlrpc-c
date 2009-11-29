@@ -80,6 +80,7 @@ This package contains the devlopement files.
 
 %build
 %cmake \
+    -D_lib:STRING=%_lib \
     -DMUST_BUILD_CURL_CLIENT:BOOL=ON \
     -DMUST_BUILD_LIBWWW_CLIENT:BOOL=OFF \
     -DENABLE_TOOLS:BOOL=ON
