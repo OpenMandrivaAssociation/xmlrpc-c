@@ -1,7 +1,7 @@
 %define name		xmlrpc-c
 %define version		1.20.3
 %define revision    1841
-%define release		%mkrel 1
+%define release		%mkrel 2
 
 %define	major		3
 %define libname		%mklibname %name %major
@@ -99,6 +99,7 @@ cd build
 %doc doc/COPYING doc/CREDITS doc/DEVELOPING doc/HISTORY doc/SECURITY doc/TESTING doc/TODO
 %{_bindir}/xmlrpc
 %{_bindir}/xmlrpc_transport
+%{_bindir}/xmlrpc_pstream
 %{_bindir}/xml-rpc-api2cpp
 %{_bindir}/xml-rpc-api2txt
 %{_bindir}/xmlrpc_cpp_proxy
