@@ -1,7 +1,7 @@
 %define name		xmlrpc-c
-%define version		1.20.3
-%define revision    1841
-%define release		%mkrel 3
+%define version		1.25.1
+%define revision    2077
+%define release		%mkrel 1
 
 %define	major		3
 %define libname		%mklibname %name %major
@@ -18,9 +18,10 @@ Source:		http://dl.sourceforge.net/sourceforge/xmlrpc-c/xmlrpc-c-%{version}.tar.
 Patch100: xmlrpc-c-cmake.patch 
 Patch102: xmlrpc-c-printf-size_t.patch
 Patch105: xmlrpc-c-longlong.patch
-Patch106: xmlrpc-c-va_list.patch
 Patch107: xmlrpc-c-uninit-curl.patch
-Patch108: xmlrpc-c-verbose-curl.patch 
+Patch108: xmlrpc-c-30x-redirect.patch
+Patch109: xmlrpc-c-check-vasprintf-return-value.patch
+Patch110: xmlrpc-c-include-string_int.h.patch
 BuildRequires:	libxml2-devel
 BuildRequires:	curl-devel
 BuildRequires:	readline-devel
@@ -69,14 +70,14 @@ This library provides a modular implementation of XML-RPC for C and C++.
 This package contains the devlopement files.
 
 %prep
-%setup -q -n %{name}
+%setup -q 
 %patch100 -p1
 %patch102 -p1
 %patch105 -p1
-%patch106 -p1
 %patch107 -p1
 %patch108 -p1
-
+%patch109 -p1
+%patch110 -p1
 
 %build
 %cmake \
