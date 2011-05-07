@@ -80,6 +80,7 @@ This package contains the devlopement files.
 %patch110 -p1
 
 %build
+export CXXFLAGS="%optflags -fpermissive"
 %cmake \
     -D_lib:STRING=%_lib \
     -DMUST_BUILD_CURL_CLIENT:BOOL=ON \
@@ -92,8 +93,7 @@ This package contains the devlopement files.
 
 %install
 rm -fr %buildroot
-cd build
-%makeinstall_std
+%makeinstall_std -C build
 
 %files
 %defattr(-,root,root)
