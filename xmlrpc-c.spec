@@ -1,6 +1,6 @@
 %define name		xmlrpc-c
-%define version		1.25.1
-%define revision    2077
+%define version		1.27.0
+%define revision    2145
 %define release		%mkrel 2
 
 %define	major		3
@@ -14,7 +14,7 @@ Release:	%release
 License:	BSD like
 Group:		System/Libraries
 URL:		http://xmlrpc-c.sourceforge.net/
-Source:		http://dl.sourceforge.net/sourceforge/xmlrpc-c/xmlrpc-c-%{version}.tar.bz2
+Source:		http://dl.sourceforge.net/sourceforge/xmlrpc-c/xmlrpc-c-%{version}.tar.xz
 Patch100: xmlrpc-c-cmake.patch 
 Patch102: xmlrpc-c-printf-size_t.patch
 Patch105: xmlrpc-c-longlong.patch
@@ -22,6 +22,7 @@ Patch107: xmlrpc-c-uninit-curl.patch
 Patch108: xmlrpc-c-30x-redirect.patch
 Patch109: xmlrpc-c-check-vasprintf-return-value.patch
 Patch110: xmlrpc-c-include-string_int.h.patch
+Patch111:       xmlrpc-c-curl-types.h.patch
 BuildRequires:	libxml2-devel
 BuildRequires:	curl-devel
 BuildRequires:	readline-devel
@@ -78,6 +79,7 @@ This package contains the devlopement files.
 %patch108 -p1
 %patch109 -p1
 %patch110 -p1
+%patch111 -p1
 
 %build
 export CXXFLAGS="%optflags -fpermissive"
