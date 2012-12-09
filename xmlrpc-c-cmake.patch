@@ -1,14 +1,14 @@
-From c819f1eed7853ae0e8d2f9e53e69f4704f08da5f Mon Sep 17 00:00:00 2001
+From 668427e2d8fff3e6b51b6bb3ca8339e47a472a04 Mon Sep 17 00:00:00 2001
 From: Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 Date: Sat, 5 Apr 2008 10:55:02 +0200
-Subject: [PATCH 1/8] make -> cmake transition
+Subject: [PATCH] make -> cmake transition
 
 cmake: updated
 ---
  CMakeLists.txt                              |  288 +++++++++++++++++++++++++++
  cmake/try-attr.cc                           |    3 +
  cmake/va-list-is-array.c                    |    9 +
- examples/CMakeLists.txt                     |   62 ++++++
+ examples/CMakeLists.txt                     |   63 ++++++
  examples/config.h                           |    1 +
  examples/cpp/CMakeLists.txt                 |   34 +++
  include/CMakeLists.txt                      |    3 +
@@ -62,8 +62,8 @@ cmake: updated
  transport_config.h.cmake                    |   16 ++
  version.h.cmake                             |    5 +
  xmlrpc-c-config                             |  105 ++++++++++
- xmlrpc_config.h.cmake                       |  156 +++++++++++++++
- 58 files changed, 1546 insertions(+), 0 deletions(-)
+ xmlrpc_config.h.cmake                       |  165 +++++++++++++++
+ 58 files changed, 1556 insertions(+), 0 deletions(-)
  create mode 100644 CMakeLists.txt
  create mode 100644 cmake/try-attr.cc
  create mode 100644 cmake/va-list-is-array.c
@@ -125,7 +125,7 @@ cmake: updated
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
 new file mode 100644
-index 0000000..740a713
+index 0000000..2d83ce2
 --- /dev/null
 +++ b/CMakeLists.txt
 @@ -0,0 +1,288 @@
@@ -143,7 +143,7 @@ index 0000000..740a713
 +
 +
 +set(XMLRPC_C_VERSION_MAJOR "1"  CACHE STRING "Version (major) of xmlrpc-c")
-+set(XMLRPC_C_VERSION_MINOR "27" CACHE STRING "Version (minor) of xmlrpc-c")
++set(XMLRPC_C_VERSION_MINOR "29" CACHE STRING "Version (minor) of xmlrpc-c")
 +set(XMLRPC_C_VERSION_POINT "0"  CACHE STRING "Version (point) of xmlrpc-c")
 +
 +set(XMLRPC_C_VERSION
@@ -443,10 +443,10 @@ index 0000000..1ad0bab
 +int main() {}
 diff --git a/examples/CMakeLists.txt b/examples/CMakeLists.txt
 new file mode 100644
-index 0000000..30d0db5
+index 0000000..4011f11
 --- /dev/null
 +++ b/examples/CMakeLists.txt
-@@ -0,0 +1,62 @@
+@@ -0,0 +1,63 @@
 +# -*- cmake -*-
 +
 +include_directories(${CMAKE_CURRENT_BINARY_DIR})
@@ -473,6 +473,7 @@ index 0000000..30d0db5
 +set(base_LIBS xmlrpc)
 +ensc_add_example(json               c base)
 +ensc_add_example(gen_sample_add_xml c base)
++ensc_add_example(parse_xml          c base)
 +
 +if(MUST_BUILD_CLIENT)
 +  set(client_LIBS xmlrpc_client)
@@ -1857,10 +1858,10 @@ index 0000000..50577fd
 +exec pkg-config "$@" $comp
 diff --git a/xmlrpc_config.h.cmake b/xmlrpc_config.h.cmake
 new file mode 100644
-index 0000000..9594e69
+index 0000000..a1f56aa
 --- /dev/null
 +++ b/xmlrpc_config.h.cmake
-@@ -0,0 +1,156 @@
+@@ -0,0 +1,165 @@
 +/* -*- c -*- */
 +
 +#ifndef H_XMLRPC_C_CONFIG_H
@@ -2015,8 +2016,17 @@ index 0000000..9594e69
 +#define XMLRPC_INT64  int64_t
 +#define XMLRPC_PRId64 PRId64
 +
++/* S_IRUSR is POSIX, defined in <sys/stat.h> Some old BSD systems and Windows
++   systems have S_IREAD instead.  Most Unix today (2011) has both.  In 2011,
++   Android has S_IRUSR and not S_IREAD.
++
++   We're ignoring S_IREAD now to see if anyone misses it.  If there are still
++   users that need it, we can handle it here.
++*/
++#define XMLRPC_S_IWUSR S_IWUSR
++#define XMLRPC_S_IRUSR S_IRUSR
 +
 +#endif
 -- 
-1.7.5.4
+1.7.6
 
