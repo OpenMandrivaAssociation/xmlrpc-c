@@ -114,7 +114,7 @@ This package contains the developement files.
 cd build
 %makeinstall_std
 
-%SOURCE101 "$RPM_BUILD_ROOT" "%_libdir" 'libxmlrpc' $RPM_BUILD_ROOT%_libdir/libxmlrpc*.so.[0-9]
+bash %SOURCE101 "$RPM_BUILD_ROOT" "%_libdir" 'libxmlrpc' $RPM_BUILD_ROOT%_libdir/libxmlrpc*.so.[0-9]
 
 %check
 unset PKG_CONFIG_PATH
