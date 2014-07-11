@@ -8,7 +8,7 @@
 Name:		xmlrpc-c
 Summary:	Programming library for writing an XML-RPC server or client in C or C++
 Version:	1.29.0
-Release:	7
+Release:	8
 License:	BSD like
 Group:		System/Libraries
 URL:		http://xmlrpc-c.sourceforge.net/
