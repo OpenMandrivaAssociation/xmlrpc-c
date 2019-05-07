@@ -64,7 +64,7 @@ server using HTTP, and gets back the response as XML.
 This library provides a modular implementation of XML-RPC for C and C++.
 
 %files -n %{libname}
-%{_libdir}/lib*.so.%{major}*
+%{_libdir}/lib*.so.*
 
 #--------------------------------------------------------------------
 
