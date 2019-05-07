@@ -1,9 +1,9 @@
-%define	major		3
-%define libname		%mklibname %name %major
-%define develname	%mklibname -d %name
+%define major 3
+%define libname %mklibname %{name} %{major}
+%define develname %mklibname -d %{name}
 
-%global                 advanced_branch		1
-%global                 svnrev			2233
+%global advanced_branch 1
+%global svnrev 2233
 
 Name:		xmlrpc-c
 Summary:	Programming library for writing an XML-RPC server or client in C or C++
@@ -19,7 +19,6 @@ URL:		http://xmlrpc-c.sourceforge.net/
 %{?advanced_branch:Source0:	xmlrpc-c-%version.tar.xz}
 Source100:	dfs.cc
 Source101:	dso-fixup
-
 Patch100:	xmlrpc-c-cmake.patch
 Patch102:	xmlrpc-c-printf-size_t.patch
 Patch105:	xmlrpc-c-longlong.patch
@@ -65,17 +64,17 @@ server using HTTP, and gets back the response as XML.
 This library provides a modular implementation of XML-RPC for C and C++.
 
 %files -n %{libname}
-%{_libdir}/lib*.so.*
+%{_libdir}/lib*.so.%{major}*
 
 #--------------------------------------------------------------------
 
 %package -n %{develname}
-Summary:        Programming library for writing an XML-RPC server or client in C or C++
-Group:          System/Libraries
-Requires:       %{libname} = %version-%release
-Requires:       libxml2-devel
-Provides:       %{name}-devel = %{version}-%{release}
-Provides:       lib%{name}-devel = %{version}-%{release}
+Summary:	Programming library for writing an XML-RPC server or client in C or C++
+Group:		System/Libraries
+Requires:	%{libname} = %{EVRD}
+Requires:	libxml2-devel
+Provides:	%{name}-devel = %{version}-%{release}
+Provides:	lib%{name}-devel = %{version}-%{release}
 
 %description -n %{develname}
 XML-RPC is a quick-and-easy way to make procedure calls over the Internet.
@@ -89,37 +88,36 @@ This package contains the developement files.
 %files -n %{develname}
 %{_bindir}/xmlrpc-c-config
 %{_includedir}/*.h
-%{_includedir}/%name
+%{_includedir}/%{name}
 %{_libdir}/lib*.so
 %{_libdir}/pkgconfig/*.pc
 
 #--------------------------------------------------------------------
 
 %prep
-%setup -q 
-%apply_patches
+%autosetup -p1
 
 %build
 %cmake \
-    -D_lib:STRING=%_lib \
+    -D_lib:STRING=%{_lib} \
     -DMUST_BUILD_CURL_CLIENT:BOOL=ON \
     -DMUST_BUILD_LIBWWW_CLIENT:BOOL=OFF \
     -DENABLE_TOOLS:BOOL=ON
 
-%__cxx $RPM_OPT_FLAGS %SOURCE100 -o depsort
+%__cxx %{optflags} %SOURCE100 -o depsort
 
-%make
+%make_build
 
 %install
 cd build
-%makeinstall_std
+%make_install
 
-bash %SOURCE101 "$RPM_BUILD_ROOT" "%_libdir" 'libxmlrpc' $RPM_BUILD_ROOT%_libdir/libxmlrpc*.so.[0-9]
+bash %SOURCE101 "%{buildroot}" "%{_libdir}" 'libxmlrpc' %{buildroot}%{_libdir}/libxmlrpc*.so.[0-9]
 
 %check
 unset PKG_CONFIG_PATH
-export PKG_CONFIG_LIBDIR=$RPM_BUILD_ROOT%_libdir/pkgconfig:%_libdir/pkgconfig:%_datadir/pkgconfig
-PATH=$RPM_BUILD_ROOT%_bindir:$PATH
+export PKG_CONFIG_LIBDIR=%{buildroot}%{_libdir}/pkgconfig:%{_libdir}/pkgconfig:%{_datadir}/pkgconfig
+PATH=%{buildroot}%{_bindir}:$PATH
 
 _e() {
      echo "\$ $@"
@@ -134,87 +132,3 @@ for comp in c++ cgi-server server-util abyss-server client libwww-client; do
 	done
 done
 set -x
-
-
-
-%changelog
-
-* Mon Jan 16 2012 dmorgan <dmorgan> 1.29.0-1.mga2
-+ Revision: 196758
-- New version 1.29.0
-  Sync patches with fedora
-
-* Sun May 15 2011 pterjan <pterjan> 1.20.3-5.mga1
-+ Revision: 99045
-- Rebuild for fixed find-requires
-
-* Wed Apr 27 2011 dmorgan <dmorgan> 1.20.3-4.mga1
-+ Revision: 92205
-- Rebuild because of missing package in i586
-
-  + pterjan <pterjan>
-    - Drop old conflicts/obsoletes
-    - imported package xmlrpc-c
-
-
-* Sat Dec 04 2010 Oden Eriksson <oeriksson@mandriva.com> 1.20.3-3mdv2011.0
-+ Revision: 608224
-- rebuild
-
-  + Guillaume Rousse <guillomovitch@mandriva.org>
-    - rebuild for ncurse support
-
-* Sun Nov 29 2009 Guillaume Rousse <guillomovitch@mandriva.org> 1.20.3-1mdv2010.1
-+ Revision: 471450
-- fix lib64 build
-- take upstream version from subversion, as there is no tarball release
-  available
-- sync with fedora package
-
-* Thu Jan 22 2009 Per Øyvind Karlsen <peroyvind@mandriva.org> 1.06.27-5mdv2009.1
-+ Revision: 332399
-- don't modify Makefile.common for setting %%{optflags}, override the variables by
-  passing them to 'make', also compile with -O3 which is suggsted by the default
-  compile flags
-- ensure that libtool and friends gets updated, otherwise ancient libtool will
-  be used, resulting in inability to link against correct libraries, thus leaving
-  the build completely broken
-
-* Wed Jan 21 2009 Helio Chissini de Castro <helio@mandriva.com> 1.06.27-4mdv2009.1
-+ Revision: 332216
-- Rraise release to recompile and solve xml2 linking issues in the library
-
-* Sun Sep 07 2008 Gaëtan Lehmann <glehmann@mandriva.org> 1.06.27-3mdv2009.0
-+ Revision: 282075
-- * rebuild for new libxml2
-  * devel package requires libxml2-devel
-
-* Sun Jul 13 2008 Funda Wang <fwang@mandriva.org> 1.06.27-2mdv2009.0
-+ Revision: 234252
-- move xmlrpc-c-config into devel package
-
-* Sun Jul 13 2008 Funda Wang <fwang@mandriva.org> 1.06.27-1mdv2009.0
-+ Revision: 234251
-- BR xml2
-- fix typo of develname
-- use own optflags
-- New version 1.06.27
-- merge gentoo patches
-
-  + Olivier Blin <oblin@mandriva.com>
-    - restore BuildRoot
-
-  + Thierry Vignaud <tv@mandriva.org>
-    - kill re-definition of %%buildroot on Pixel's request
-
-  + Nicolas Vigier <nvigier@mandriva.com>
-    - add Provides on libxmlrpc-c-devel
-
-* Wed May 23 2007 Nicolas Vigier <nvigier@mandriva.com> 1.06.14-1mdv2008.0
-+ Revision: 30032
-- Update to version 1.06.14
-
-* Wed May 09 2007 Nicolas Vigier <nvigier@mandriva.com> 1.06.13-1mdv2008.0
-+ Revision: 25644
-- Import xmlrpc-c
-
