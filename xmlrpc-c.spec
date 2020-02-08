@@ -12,7 +12,7 @@ Release:	1
 License:	BSD like
 Group:		System/Libraries
 URL:		http://xmlrpc-c.sourceforge.net/
-Source0:	https://downloads.sourceforge.net/xmlrpc-c/xmlrpc-c-%version.tgz
+Source0:	https://sourceforge.net/projects/xmlrpc-c/files/Xmlrpc-c%20Super%20Stable/%{version}/%{name}-%{version}.tgz
 Source100:	dfs.cc
 Source101:	dso-fixup
 Patch100:	xmlrpc-c-cmake.patch
