@@ -10,8 +10,8 @@
 
 Name:		xmlrpc-c
 Summary:	Programming library for writing an XML-RPC server or client in C or C++
-Version:	1.51.05
-Release:	%mkrel 2
+Version:	1.51.06
+Release:	1
 Group:		System/Libraries
 # See doc/COPYING for details.
 # The Python 1.5.2 license used by a few files is just BSD.
