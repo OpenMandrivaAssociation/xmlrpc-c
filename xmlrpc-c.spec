@@ -24,15 +24,15 @@ URL:            https://xmlrpc-c.sourceforge.net/
 %{?advanced_branch:Source0: xmlrpc-c-%version.tar.xz}
 
 # Upstreamable patches
-Patch101:       0001-xmlrpc_server_abyss-use-va_args-properly.patch
-Patch102:       0002-Use-proper-datatypes-for-long-long.patch
-Patch103:       0003-allow-30x-redirections.patch
+#Patch101:       0001-xmlrpc_server_abyss-use-va_args-properly.patch
+#Patch102:       0002-Use-proper-datatypes-for-long-long.patch
+#Patch103:       0003-allow-30x-redirections.patch
 #Patch104:       xmlrpc-c-printf-size_t.patch
 #Patch105:       xmlrpc-c-check-vasprintf-return-value.patch
 
 # Meson buildsystem, see https://blogs.gnome.org/ignatenko/2016/12/17/meson-%E2%99%A5-xmlrpc-c/
-Patch1001:      0001-add-meson-buildsystem-definitions.patch
-Patch1002:      0002-chmod-x-xml-rpc-api2txt.patch
+#Patch1001:      0001-add-meson-buildsystem-definitions.patch
+#Patch1002:      0002-chmod-x-xml-rpc-api2txt.patch
 
 BuildRequires:  git-core
 BuildRequires:  meson >= 0.36.0
