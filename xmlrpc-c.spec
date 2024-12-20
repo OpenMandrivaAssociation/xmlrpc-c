@@ -31,8 +31,8 @@ URL:            https://xmlrpc-c.sourceforge.net/
 #Patch105:       xmlrpc-c-check-vasprintf-return-value.patch
 
 # Meson buildsystem, see https://blogs.gnome.org/ignatenko/2016/12/17/meson-%E2%99%A5-xmlrpc-c/
-#Patch1001:      0001-add-meson-buildsystem-definitions.patch
-#Patch1002:      0002-chmod-x-xml-rpc-api2txt.patch
+Patch1001:      0001-add-meson-buildsystem-definitions.patch
+Patch1002:      0002-chmod-x-xml-rpc-api2txt.patch
 
 BuildRequires:  git-core
 BuildRequires:  meson >= 0.36.0
